@@ -56,7 +56,8 @@ namespace Despensa.Server.Controllers
 
                 await context.AddAsync(pepe);
                 await context.SaveChangesAsync();
-                return pepe.Id;
+                //return pepe.Id;
+                return Ok($"Se le asigno el monto {pepe.Monto} al proveedor de id: {pepe.ProveedorId} ");
             }
             catch (Exception e)
             {
