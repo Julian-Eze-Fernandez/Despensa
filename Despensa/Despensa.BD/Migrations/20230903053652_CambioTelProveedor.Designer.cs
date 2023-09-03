@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Despensa.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230902201350_Relaciones")]
-    partial class Relaciones
+    [Migration("20230903053652_CambioTelProveedor")]
+    partial class CambioTelProveedor
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,8 +37,11 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("Decimal(10,8)");
+                    b.Property<int>("Monto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoPago")
                         .IsRequired()
@@ -49,6 +52,8 @@ namespace Despensa.BD.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProveedorId");
 
                     b.HasIndex("UsuarioId");
 
@@ -73,21 +78,17 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("PagoId")
-                        .HasColumnType("int");
-
                     b.Property<string>("RazonSocial")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("Telefono")
+                    b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PagoId");
 
                     b.ToTable("Proveedores");
                 });
@@ -123,10 +124,8 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                    b.Property<int>("DNI")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
@@ -136,37 +135,38 @@ namespace Despensa.BD.Migrations
                     b.Property<int>("RolId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Telefono")
+                    b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RolId");
+
+                    b.HasIndex(new[] { "DNI" }, "Usuario_DNI_UQ")
+                        .IsUnique();
 
                     b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("Despensa.BD.Data.Entity.Pago", b =>
                 {
+                    b.HasOne("Despensa.BD.Data.Entity.Proveedor", "Proveedor")
+                        .WithMany("Pagos")
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Despensa.BD.Data.Entity.Usuario", "Usuario")
                         .WithMany("Pagos")
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("Proveedor");
+
                     b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("Despensa.BD.Data.Entity.Proveedor", b =>
-                {
-                    b.HasOne("Despensa.BD.Data.Entity.Pago", "Pago")
-                        .WithMany()
-                        .HasForeignKey("PagoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Pago");
                 });
 
             modelBuilder.Entity("Despensa.BD.Data.Entity.Usuario", b =>
@@ -178,6 +178,11 @@ namespace Despensa.BD.Migrations
                         .IsRequired();
 
                     b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Proveedor", b =>
+                {
+                    b.Navigation("Pagos");
                 });
 
             modelBuilder.Entity("Despensa.BD.Data.Entity.Rol", b =>

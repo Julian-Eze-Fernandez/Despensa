@@ -21,11 +21,6 @@ namespace Despensa.BD.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Pago>(o =>
-            {
-                o.Property(b => b.Monto).HasColumnType("Decimal(10,8)");
-            });
-
             var cascadeFKs = modelBuilder.Model.GetEntityTypes()
                 .SelectMany(t => t.GetForeignKeys())
                 .Where(fk => !fk.IsOwnership && fk.DeleteBehavior == DeleteBehavior.Cascade);

@@ -25,10 +25,9 @@ namespace Despensa.BD.Data.Entity
 
         [Required(ErrorMessage = "El NUMERO del TELÉFONO es Obligatorio")]
         [MaxLength(20, ErrorMessage = "Solo se aceptan hasta 20 caracteres en el TELÉFONO")]
-        public int Telefono { get; set; }
+        public string Telefono { get; set; }
 
         //Relaciones
-        public int PagoId { get; set; }
-        public Pago Pago { get; set; }
+        public List<Pago> Pagos { get; set; } = new List<Pago>();
     }
 }

@@ -24,6 +24,17 @@ namespace Despensa.Server.Controllers
             return await context.Roles.ToListAsync();
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<Rol?>> Get(int id)
+        {
+            var existe = await context.Roles.AnyAsync(x => x.Id == id);
+            if (!existe)
+            {
+                return NotFound($"El Rol {id} no existe");
+            }
+            return await context.Roles.FirstOrDefaultAsync(x => x.Id == id);
+        }
+
         [HttpPost]
         public async Task<ActionResult<int>> Post(Rol rol) 
         {

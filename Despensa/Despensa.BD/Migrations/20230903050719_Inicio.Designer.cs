@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Despensa.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230902201240_Inicio")]
+    [Migration("20230903050719_Inicio")]
     partial class Inicio
     {
         /// <inheritdoc />
@@ -37,15 +37,25 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<decimal>("Monto")
-                        .HasColumnType("Decimal(10,8)");
+                    b.Property<int>("Monto")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProveedorId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoPago")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProveedorId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Pagos");
                 });
@@ -113,23 +123,75 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<string>("DNI")
-                        .IsRequired()
-                        .HasMaxLength(8)
-                        .HasColumnType("nvarchar(8)");
+                    b.Property<int>("DNI")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("Telefono")
-                        .HasMaxLength(20)
+                    b.Property<int>("RolId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Telefono")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RolId");
+
+                    b.HasIndex(new[] { "DNI" }, "Usuario_DNI_UQ")
+                        .IsUnique();
+
                     b.ToTable("Usuarios");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Pago", b =>
+                {
+                    b.HasOne("Despensa.BD.Data.Entity.Proveedor", "Proveedor")
+                        .WithMany("Pagos")
+                        .HasForeignKey("ProveedorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Despensa.BD.Data.Entity.Usuario", "Usuario")
+                        .WithMany("Pagos")
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Proveedor");
+
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Usuario", b =>
+                {
+                    b.HasOne("Despensa.BD.Data.Entity.Rol", "Rol")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("RolId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Proveedor", b =>
+                {
+                    b.Navigation("Pagos");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Rol", b =>
+                {
+                    b.Navigation("Usuarios");
+                });
+
+            modelBuilder.Entity("Despensa.BD.Data.Entity.Usuario", b =>
+                {
+                    b.Navigation("Pagos");
                 });
 #pragma warning restore 612, 618
         }

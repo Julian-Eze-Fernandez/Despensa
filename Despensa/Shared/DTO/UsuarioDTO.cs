@@ -1,18 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Despensa.BD.Data.Entity
+namespace Despensa.Shared.DTO
 {
-    [Index(nameof(DNI), Name = "Usuario_DNI_UQ", IsUnique = true)]
-    public class Usuario
+    public class UsuarioDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "El DNI del USUARIO es Obligatorio")]
         public int DNI { get; set; }
 
@@ -31,8 +27,5 @@ namespace Despensa.BD.Data.Entity
         //Relaciones
         [Required(ErrorMessage = "El Rol del Usuario es Obligatorio")]
         public int RolId { get; set; }
-        public Rol Rol { get; set; }
-
-        public List<Pago> Pagos { get; set; } = new List<Pago>();
     }
 }

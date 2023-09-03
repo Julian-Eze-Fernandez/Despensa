@@ -5,12 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Despensa.BD.Data.Entity
+namespace Despensa.Shared.DTO
 {
-    public class Pago
+    public class PagoDTO
     {
-        public int Id { get; set; }
-
         [Required(ErrorMessage = "La DESCRIPCIÓN es Obligatoria")]
         [MaxLength(250, ErrorMessage = "Solo se aceptan hasta 250 caracteres en la DESCRIPCIÓN del PAGO")]
         public string Descripcion { get; set; }
@@ -24,9 +22,6 @@ namespace Despensa.BD.Data.Entity
 
         //Relaciones
         public int UsuarioId { get; set; }
-        public Usuario Usuario { get; set; }
-
         public int ProveedorId { get; set; }
-        public Proveedor Proveedor { get; set; }
     }
 }
