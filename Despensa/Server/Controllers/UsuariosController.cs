@@ -3,6 +3,7 @@ using Despensa.BD.Data.Entity;
 using Despensa.Shared.DTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace Despensa.Server.Controllers
 {
@@ -20,12 +21,13 @@ namespace Despensa.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Usuario>>> Get()
         {
-            var pepe = await context.Usuarios.ToListAsync();
-            if (pepe==null || pepe.Count == 0)
+            var lista = await context.Usuarios.ToListAsync();
+            if (lista == null || lista.Count == 0)
             {
-                return BadRequest("No existen usuarios");
+                return BadRequest("No hay usuarios cargados.");
             }
-            return pepe;
+
+            return lista;
         }
 
         [HttpGet("{id:int}")]
@@ -34,7 +36,7 @@ namespace Despensa.Server.Controllers
             var existe = await context.Usuarios.AnyAsync(x => x.Id == id);
             if (!existe)
             {
-                return NotFound($"El usuario {id} no existe");
+                return NotFound($"El Usuario {id} no existe.");
             }
             return await context.Usuarios.FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -44,12 +46,6 @@ namespace Despensa.Server.Controllers
         {
             try
             {
-                var existe = await context.Roles.AnyAsync(x => x.Id == entidad.RolId);
-                if (!existe)
-                {
-                    return NotFound($"El rol de id={entidad.RolId} no existe");
-                }
-
                 Usuario pepe = new Usuario();
 
                 pepe.RolId = entidad.RolId;
@@ -60,7 +56,7 @@ namespace Despensa.Server.Controllers
 
                 await context.AddAsync(pepe);
                 await context.SaveChangesAsync();
-                return pepe.Id;
+                return Ok("Se cargo correctamente el Usuario.");
             }
             catch (Exception e)
             {
@@ -68,23 +64,28 @@ namespace Despensa.Server.Controllers
             }
         }
 
-        [HttpPut("{id:int}")] // api/roles/2
-        public async Task<ActionResult> Put(Usuario entidad, int id)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(UsuarioDTO usuarioDTO, int id)
         {
-            if (id != entidad.Id)
+            //comprobar que ese id exista en la base de datos
+            var exist = await context.Usuarios.AnyAsync(e => e.Id == id);
+            if (!exist)
             {
-                return BadRequest("El id del Usuario no corresponde");
+                return BadRequest("El Usuario no existe.");
             }
 
-            var existe = await context.Usuarios.AnyAsync(x => x.Id == id);
-            if (!existe)
-            {
-                return NotFound($"El Usuario de id={id} no existe");
-            }
+            Usuario entidad = new Usuario();
+            entidad.Id = id;
+            entidad.DNI = usuarioDTO.DNI;
+            entidad.Nombre = usuarioDTO.Nombre;
+            entidad.Apellido = usuarioDTO.Apellido;
+            entidad.Telefono = usuarioDTO.Telefono;
+            entidad.RolId = usuarioDTO.RolId;
 
+            //actualizar
             context.Update(entidad);
             await context.SaveChangesAsync();
-            return Ok();
+            return Ok("Actualizado con Exito.");
         }
 
         [HttpDelete("{id:int}")]
@@ -93,7 +94,7 @@ namespace Despensa.Server.Controllers
             var existe = await context.Usuarios.AnyAsync(x => x.Id == id);
             if (!existe)
             {
-                return NotFound($"El Usuario de id={id} no existe");
+                return NotFound($"El Usuario de id={id} no existe.");
             }
             Usuario pepe = new Usuario();
             pepe.Id = id;

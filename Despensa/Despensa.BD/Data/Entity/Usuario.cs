@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace Despensa.BD.Data.Entity
 {
-    [Index(nameof(DNI), Name = "Usuario_DNI_UQ", IsUnique = true)]
     public class Usuario
     {
         public int Id { get; set; }
@@ -29,7 +28,7 @@ namespace Despensa.BD.Data.Entity
         public string Telefono { get; set; }
 
         //Relaciones
-        [Required(ErrorMessage = "El Rol del Usuario es Obligatorio")]
+        //[Required(ErrorMessage = "El Rol del Usuario es Obligatorio")]
         public int RolId { get; set; }
         public Rol Rol { get; set; }
 

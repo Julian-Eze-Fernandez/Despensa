@@ -1,5 +1,6 @@
 ﻿using Despensa.BD.Data;
 using Despensa.BD.Data.Entity;
+using Despensa.Shared.DTO;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,13 @@ namespace Despensa.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Rol>>> Get()
         {
-            return await context.Roles.ToListAsync();
+            var lista = await context.Roles.ToListAsync();
+            if (lista == null || lista.Count == 0)
+            {
+                return BadRequest("No hay roles cargados.");
+            }
+
+            return lista;
         }
 
         [HttpGet("{id:int}")]
@@ -30,37 +37,47 @@ namespace Despensa.Server.Controllers
             var existe = await context.Roles.AnyAsync(x => x.Id == id);
             if (!existe)
             {
-                return NotFound($"El Rol {id} no existe");
+                return NotFound($"El Rol {id} no existe.");
             }
             return await context.Roles.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(Rol rol) 
+        public async Task<ActionResult> Post(RolDTO rolDTO) 
         {
-            //return BadRequest("ERROR DE PRUEBA");
-            context.Add(rol);
-            await context.SaveChangesAsync();
-            return rol.Id;
+            try
+            {
+                Rol nuevaentidad = new Rol();
+                nuevaentidad.NombreRol = rolDTO.NombreRol;
+
+                await context.AddAsync(nuevaentidad);
+                await context.SaveChangesAsync();
+                return Ok("Se cargo correctamente el Rol.");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
-        [HttpPut("{id:int}")] // api/roles/2
-        public async Task<ActionResult> Put(Rol rol, int id)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(RolDTO rolDTO, int id)
         {
-            if (id != rol.Id)
+            //comprobar que ese id exista en la base de datos
+            var exist = await context.Roles.AnyAsync(x => x.Id == id);
+            if (!exist)
             {
-                return BadRequest("El id del rol no corresponde");
+                return BadRequest("El Rol no existe.");
             }
 
-            var existe = await context.Roles.AnyAsync(x => x.Id == id);
-            if (!existe)
-            {
-                return NotFound($"El rol de id={id} no existe");
-            }
+            Rol entidad = new Rol();
+            entidad.Id = id;
+            entidad.NombreRol = rolDTO.NombreRol;
 
-            context.Update(rol);
+            //Actualizar
+            context.Update(entidad);
             await context.SaveChangesAsync();
-            return Ok();
+            return Ok("Actualizado con Exito.");
         }
 
         [HttpDelete("{id:int}")]
@@ -69,7 +86,7 @@ namespace Despensa.Server.Controllers
             var existe = await context.Roles.AnyAsync(x => x.Id == id);
             if (!existe)
             {
-                return NotFound($"El rol de id={id} no existe");
+                return NotFound($"El rol de id={id} no existe.");
             }
 
             context.Remove(new Rol() { Id=id });

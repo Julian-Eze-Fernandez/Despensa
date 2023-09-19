@@ -21,7 +21,13 @@ namespace Despensa.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Pago>>> Get()
         {
-            return await context.Pagos.ToListAsync();
+            var lista = await context.Pagos.ToListAsync();
+            if (lista == null || lista.Count == 0)
+            {
+                return BadRequest("No hay pagos cargados.");
+            }
+
+            return lista;
         }
 
         [HttpGet("{id:int}")]
@@ -30,34 +36,34 @@ namespace Despensa.Server.Controllers
             var existe = await context.Pagos.AnyAsync(x => x.Id == id);
             if (!existe)
             {
-                return NotFound($"El pago {id} no existe");
+                return NotFound($"El Pago {id} no existe.");
             }
             return await context.Pagos.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(PagoDTO entidad)
+        public async Task<ActionResult<int>> Post(PagoDTO pagoDTO)
         {
             try
             {
-                var existe = await context.Usuarios.AnyAsync(x => x.Id == entidad.UsuarioId);
+                var existe = await context.Usuarios.AnyAsync(x => x.Id == pagoDTO.UsuarioId);
                 if (!existe)
                 {
-                    return NotFound($"El usuario de id={entidad.UsuarioId} no existe");
+                    return NotFound($"El usuario de id={pagoDTO.UsuarioId} no existe.");
                 }
 
-                Pago pepe = new Pago();
+                Pago entidad = new Pago();
 
-                pepe.ProveedorId = entidad.ProveedorId;
-                pepe.UsuarioId = entidad.UsuarioId;
-                pepe.Descripcion = entidad.Descripcion;
-                pepe.Monto = entidad.Monto;
-                pepe.TipoPago = entidad.TipoPago;
+                entidad.ProveedorId = pagoDTO.ProveedorId;
+                entidad.UsuarioId = pagoDTO.UsuarioId;
+                entidad.Descripcion = pagoDTO.Descripcion;
+                entidad.Monto = pagoDTO.Monto;
+                entidad.TipoPago = pagoDTO.TipoPago;
 
-                await context.AddAsync(pepe);
+                await context.AddAsync(entidad);
                 await context.SaveChangesAsync();
                 //return pepe.Id;
-                return Ok($"Se le asigno el monto {pepe.Monto} al proveedor de id: {pepe.ProveedorId} ");
+                return Ok($"Se le asigno el monto {entidad.Monto} al proveedor {entidad.ProveedorId}.");
             }
             catch (Exception e)
             {
@@ -65,23 +71,28 @@ namespace Despensa.Server.Controllers
             }
         }
 
-        [HttpPut("{id:int}")] // api/pagos/2
-        public async Task<ActionResult> Put(Pago entidad, int id)
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> Put(PagoDTO pagoDTO, int id)
         {
-            if (id != entidad.Id)
+            //comprobar que ese id exista en la base de datos
+            var exist = await context.Pagos.AnyAsync(x => x.Id == id);
+            if (!exist)
             {
-                return BadRequest("El id del Pago no corresponde");
+                return BadRequest("El Pago no existe.");
             }
 
-            var existe = await context.Pagos.AnyAsync(x => x.Id == id);
-            if (!existe)
-            {
-                return NotFound($"El Pago de id={id} no existe");
-            }
+            Pago entidad = new Pago();
+            entidad.Id = id;
+            entidad.Descripcion = pagoDTO.Descripcion;
+            entidad.Monto = pagoDTO.Monto;
+            entidad.TipoPago = pagoDTO.TipoPago;
+            entidad.UsuarioId = pagoDTO.UsuarioId;
+            entidad.ProveedorId = pagoDTO.ProveedorId;
 
+            //Actualizar
             context.Update(entidad);
             await context.SaveChangesAsync();
-            return Ok();
+            return Ok("Actualizado con Exito.");
         }
 
         [HttpDelete("{id:int}")]
