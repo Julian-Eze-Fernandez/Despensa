@@ -42,19 +42,19 @@ namespace Despensa.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(UsuarioDTO entidad)
+        public async Task<ActionResult<int>> Post(UsuarioDTO usuarioDTO)
         {
             try
             {
-                Usuario pepe = new Usuario();
+                Usuario entidad = new Usuario();
 
-                pepe.RolId = entidad.RolId;
-                pepe.DNI = entidad.DNI;
-                pepe.Nombre = entidad.Nombre;
-                pepe.Apellido = entidad.Apellido;
-                pepe.Telefono = entidad.Telefono;
+                entidad.RolId = usuarioDTO.RolId;
+                entidad.DNI = usuarioDTO.DNI;
+                entidad.Nombre = usuarioDTO.Nombre;
+                entidad.Apellido = usuarioDTO.Apellido;
+                entidad.Telefono = usuarioDTO.Telefono;
 
-                await context.AddAsync(pepe);
+                await context.AddAsync(entidad);
                 await context.SaveChangesAsync();
                 return Ok("Se cargo correctamente el Usuario.");
             }
@@ -96,10 +96,10 @@ namespace Despensa.Server.Controllers
             {
                 return NotFound($"El Usuario de id={id} no existe.");
             }
-            Usuario pepe = new Usuario();
-            pepe.Id = id;
+            Usuario entidad = new Usuario();
+            entidad.Id = id;
 
-            context.Remove(pepe);
+            context.Remove(entidad);
 
             await context.SaveChangesAsync();
 

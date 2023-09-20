@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Despensa.BD\Despensa.BD.csproj" />
     <ProjectReference Include="..\Shared\Despensa.Shared.csproj" />
   </ItemGroup>
 

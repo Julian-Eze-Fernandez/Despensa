@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Despensa.Server", "Despensa\Server\Despensa.Server.csproj", "{CD0D37D3-FC4F-401D-AB4B-3760774DB7B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despensa.Server", "Despensa\Server\Despensa.Server.csproj", "{CD0D37D3-FC4F-401D-AB4B-3760774DB7B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Despensa.Client", "Despensa\Client\Despensa.Client.csproj", "{C6DED6FB-9677-4346-86B6-86228DAE3281}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despensa.Client", "Despensa\Client\Despensa.Client.csproj", "{C6DED6FB-9677-4346-86B6-86228DAE3281}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Despensa.Shared", "Despensa\Shared\Despensa.Shared.csproj", "{6FFBA849-1624-4EF0-B539-6A88C5561E4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despensa.Shared", "Despensa\Shared\Despensa.Shared.csproj", "{6FFBA849-1624-4EF0-B539-6A88C5561E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Despensa.BD", "Despensa\Despensa.BD\Despensa.BD.csproj", "{72FF0793-3FB3-4E91-84FE-EFD77CAB8BEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Despensa.BD", "Despensa\Despensa.BD\Despensa.BD.csproj", "{72FF0793-3FB3-4E91-84FE-EFD77CAB8BEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

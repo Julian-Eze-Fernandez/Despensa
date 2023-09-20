@@ -27,7 +27,6 @@ namespace Despensa.Server.Controllers
             {
                 return BadRequest("No hay roles cargados.");
             }
-
             return lista;
         }
 
@@ -43,14 +42,14 @@ namespace Despensa.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> Post(RolDTO rolDTO) 
+        public async Task<ActionResult> Post(RolDTO rolDTO)
         {
             try
             {
-                Rol nuevaentidad = new Rol();
-                nuevaentidad.NombreRol = rolDTO.NombreRol;
+                Rol entidad = new Rol();
+                entidad.NombreRol = rolDTO.NombreRol;
 
-                await context.AddAsync(nuevaentidad);
+                await context.AddAsync(entidad);
                 await context.SaveChangesAsync();
                 return Ok("Se cargo correctamente el Rol.");
             }
@@ -81,7 +80,7 @@ namespace Despensa.Server.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public async Task<ActionResult> Delete(int id) 
+        public async Task<ActionResult> Delete(int id)
         {
             var existe = await context.Roles.AnyAsync(x => x.Id == id);
             if (!existe)
@@ -89,7 +88,7 @@ namespace Despensa.Server.Controllers
                 return NotFound($"El rol de id={id} no existe.");
             }
 
-            context.Remove(new Rol() { Id=id });
+            context.Remove(new Rol() { Id = id });
             await context.SaveChangesAsync();
             return Ok();
         }
