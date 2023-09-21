@@ -1,0 +1,53 @@
+﻿@page "/roles/editar/{rolId:int}"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+<h3>Editar Rol</h3>
+
+<FormRol rol="rol" onValidSubmit="Grabar" onCancel="Cancelar" />
+
+@code {
+    private Rol rol = new();
+    [Parameter] public int rolId { get; set; }
+    string Mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitializedAsync();
+        await Mostar();
+    }
+
+    private async Task Mostar()
+    {
+        var respuesta = await http.Get<Rol>($"api/Roles/{rolId}");
+        if (!respuesta.Error)
+        {
+            rol = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+
+    private async void Grabar()
+    {
+        // RolDTO rolDTO = new()
+        //     {
+        //         NombreRol = rol.NombreRol
+        //     };
+        // var httpRespuesta = await http.Post<RolDTO>("api/Roles", rolDTO);
+
+        // if (httpRespuesta.Error)
+        // {
+        //     var body = httpRespuesta.HttpResponseMessage;
+        // }
+
+        navigationManager.NavigateTo("/roles");
+    }
+
+    private async void Cancelar()
+    {
+        navigationManager.NavigateTo("/roles");
+    }
+
+}

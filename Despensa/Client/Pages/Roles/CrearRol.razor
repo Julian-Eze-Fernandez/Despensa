@@ -1,0 +1,32 @@
+﻿@page "/roles/crear"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+<h3>Nuevo Rol</h3>
+
+<FormRol rol="rol" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+
+@code {
+    private Rol rol = new Rol();
+
+    private async void Grabar()
+    {
+        RolDTO rolDTO = new()
+            {
+                NombreRol = rol.NombreRol
+            };
+        var httpRespuesta = await http.Post<RolDTO>("api/Roles", rolDTO);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.HttpResponseMessage;
+        }
+
+        navigationManager.NavigateTo("/roles");
+    }
+
+    private async void Cancelar()
+    {
+        navigationManager.NavigateTo("/roles");
+    }
+}

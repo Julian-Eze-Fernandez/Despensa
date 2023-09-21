@@ -9,9 +9,10 @@
 
 <h3>Lista de Roles</h3>
 
+<a class="btn btn-primary" href="roles/crear">Crear Rol</a>
+
 <table>
     <tr>
-        <th>Id</th>
         <th>NombreRol</th>
     </tr>
 
@@ -34,8 +35,13 @@
             foreach (var item in roles)
             {
                 <tr>
-                    <th>@item.Id</th>
                     <td>@item.NombreRol</td>
+                    <td>
+                        <a class="btn btn-primary"
+                           href="roles/editar/@item.Id">
+                            Editar
+                        </a>
+                    </td>
                 </tr>
             }
         }
@@ -68,4 +74,5 @@
             Mensaje = await respuesta.ObtenerError();
         }
     }
+
 }
