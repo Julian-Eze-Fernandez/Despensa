@@ -42,27 +42,49 @@
                             Editar
                         </a>
                     </td>
+                    <td>
+                        <a class="btn btn-warning"
+                           @onclick="()=>Eliminar(item)">
+                            Borrar
+                        </a>
+                    </td>
                 </tr>
             }
         }
     }
-
 </table>
 
+<Confirmacion @ref="confirmacion"
+              verCancelar="true"
+              verOk="true"
+              textOk="Aceptar"
+              Titulo="Borrar especialidad"
+              onCancel="Cancelar"
+              onConfirm="Borrar">
+    <div>
+        <h1>Está por borrar la especialidad @RolBorrar.NombreRol</h1>
+        <br />
+        ¿Está seguro que desea continuar?
+    </div>
+</Confirmacion>
+
 @code {
+    Confirmacion confirmacion;
+
     List<Rol>? roles;
     bool Error = false;
     string Mensaje = "";
+    Rol RolBorrar;
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
-
     }
 
     private async Task Leer()
     {
+        roles = null;
         var respuesta = await http.Get<List<Rol>>("api/Roles");
         Error = respuesta.Error;
         if (!respuesta.Error)
@@ -73,6 +95,30 @@
         {
             Mensaje = await respuesta.ObtenerError();
         }
+    }
+
+    private void Cancelar()
+    {
+        confirmacion.Ocultar();
+        RolBorrar = null;
+    }
+
+    private async Task Eliminar(Rol rolBorrar)
+    {
+        RolBorrar = rolBorrar;
+        confirmacion.Ver();
+    }
+
+    private async Task Borrar()
+    {
+        var respuesta = await http.Delete($"api/roles/{RolBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "Error, no se puede borrar";
+        }
+
+        Cancelar();
+        await Leer();
     }
 
 }

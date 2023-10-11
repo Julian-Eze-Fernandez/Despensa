@@ -12,7 +12,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        base.OnInitializedAsync();
+        await base.OnInitializedAsync();
         await Mostar();
     }
 
@@ -29,23 +29,20 @@
         }
     }
 
-    private async void Grabar()
+    private async Task Grabar()
     {
-        // RolDTO rolDTO = new()
-        //     {
-        //         NombreRol = rol.NombreRol
-        //     };
-        // var httpRespuesta = await http.Post<RolDTO>("api/Roles", rolDTO);
+        var respuesta = await http.Put<Rol>($"api/roles/{rolId}",
+                                            rol);
 
-        // if (httpRespuesta.Error)
-        // {
-        //     var body = httpRespuesta.HttpResponseMessage;
-        // }
+        if (respuesta.Error)
+        {
+            var body = respuesta.HttpResponseMessage;
+        }
 
         navigationManager.NavigateTo("/roles");
     }
 
-    private async void Cancelar()
+    private void Cancelar()
     {
         navigationManager.NavigateTo("/roles");
     }

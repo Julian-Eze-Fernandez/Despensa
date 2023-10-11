@@ -9,7 +9,7 @@
 @code {
     private Rol rol = new Rol();
 
-    private async void Grabar()
+    private async Task Grabar()
     {
         RolDTO rolDTO = new()
             {
@@ -25,7 +25,7 @@
         navigationManager.NavigateTo("/roles");
     }
 
-    private async void Cancelar()
+    private void Cancelar()
     {
         navigationManager.NavigateTo("/roles");
     }
