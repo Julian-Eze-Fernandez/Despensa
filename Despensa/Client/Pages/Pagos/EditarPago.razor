@@ -1,13 +1,13 @@
-﻿@page "/roles/editar/{rolId:int}"
+﻿@page "/pagos/editar/{pagoId:int}"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
-<h3>Editar Rol</h3>
+<h3>Editar Pago</h3>
 
-<FormRol rol="rol" onValidSubmit="Grabar" onCancel="Cancelar" />
+<FormPago pago="pago" onValidSubmit="Grabar" onCancel="Cancelar" />
 
 @code {
-    private Rol rol = new();
-    [Parameter] public int rolId { get; set; }
+    private Pago pago = new();
+    [Parameter] public int pagoId { get; set; }
     string Mensaje = "";
 
     protected override async Task OnInitializedAsync()
@@ -18,10 +18,10 @@
 
     private async Task Mostrar()
     {
-        var respuesta = await http.Get<Rol>($"api/Roles/{rolId}");
+        var respuesta = await http.Get<Pago>($"api/Pagos/{pagoId}");
         if (!respuesta.Error)
         {
-            rol = respuesta.Respuesta;
+            pago = respuesta.Respuesta;
         }
         else
         {
@@ -31,20 +31,19 @@
 
     private async Task Grabar()
     {
-        var respuesta = await http.Put<Rol>($"api/roles/{rolId}",
-                                            rol);
+        var respuesta = await http.Put<Pago>($"api/pagos/{pagoId}",
+                                            pago);
 
         if (respuesta.Error)
         {
             var body = respuesta.HttpResponseMessage;
         }
 
-        navigationManager.NavigateTo("/roles");
+        navigationManager.NavigateTo("/pagos");
     }
 
     private void Cancelar()
     {
-        navigationManager.NavigateTo("/roles");
+        navigationManager.NavigateTo("/pagos");
     }
-
 }

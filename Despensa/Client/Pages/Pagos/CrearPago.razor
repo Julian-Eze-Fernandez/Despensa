@@ -1,0 +1,35 @@
+﻿@page "/pagos/crear"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+<h3>CrearPago</h3>
+
+<FormPago pago="pago" onValidSubmit="Grabar" onCancel="Cancelar"/>
+
+@code {
+    private Pago pago = new Pago();
+
+    private async Task Grabar()
+    {
+        PagoDTO pagoDTO = new()
+            {
+                Descripcion = pago.Descripcion,
+                Monto = pago.Monto,
+                TipoPago = pago.TipoPago,
+                UsuarioId = pago.UsuarioId,
+                ProveedorId = pago.ProveedorId
+            };
+        var httpRespuesta = await http.Post<PagoDTO>("api/Pagos", pagoDTO);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.HttpResponseMessage;
+        }
+
+        navigationManager.NavigateTo("/pagos");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/pagos");
+    }
+}

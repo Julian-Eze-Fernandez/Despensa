@@ -1,19 +1,22 @@
-﻿@page "/roles"
+﻿@page "/pagos"
 @inject IHttpServicio http
 
-<PageTitle>ROLES</PageTitle>
+<PageTitle>PAGOS</PageTitle>
 
 <HeadContent>
-    <meta name="description" content="Listado de Roles" />
+    <meta name="description" content="Listado de Pagos" />
 </HeadContent>
 
-<h3>Lista de Roles</h3>
+<h3>Lista de Pagos</h3>
 
-<a class="btn btn-primary" href="roles/crear">Crear Rol</a>
+<a class="btn btn-primary" href="pagos/crear">Crear Pago</a>
 
 <table>
     <tr>
-        <th>NombreRol</th>
+        <th>Numero de Proveedor</th>
+        <th>Descripcion</th>
+        <th>Monto</th>
+        <th>Tipo de Pago</th>
     </tr>
 
     @if (Error)
@@ -22,29 +25,32 @@
     }
     else
     {
-        @if (roles == null)
+        @if (pagos == null)
         {
             <tr>Cargando...</tr>
         }
-        else if (roles.Count == 0)
+        else if (pagos.Count == 0)
         {
-            <tr>No existen datos.</tr>
+            <tr>No existen pagos.</tr>
         }
         else
         {
-            foreach (var item in roles)
+            foreach (var item in pagos)
             {
                 <tr>
-                    <td>@item.NombreRol</td>
+                    <td>@item.ProveedorId</td>
+                    <td>@item.Descripcion</td>
+                    <td>@item.Monto</td>
+                    <td>@item.TipoPago</td>
                     <td>
                         <a class="btn btn-primary"
-                           href="roles/editar/@item.Id">
+                           href="pagos/editar/@item.Id">
                             Editar
                         </a>
                     </td>
                     <td>
                         <a class="btn btn-warning"
-                           @onclick="()=>Eliminar(item)">
+                        @onclick="()=>Eliminar(item)">
                             Borrar
                         </a>
                     </td>
@@ -62,7 +68,7 @@
               onCancel="Cancelar"
               onConfirm="Borrar">
     <div>
-        <h1>Está por borrar el rol @RolBorrar.NombreRol</h1>
+        <h1>Está por borrar el pago @PagoBorrar.Descripcion</h1>
         <br />
         ¿Está seguro que desea continuar?
     </div>
@@ -71,10 +77,10 @@
 @code {
     Confirmacion confirmacion;
 
-    List<Rol>? roles;
+    List<Pago>? pagos;
     bool Error = false;
     string Mensaje = "";
-    Rol RolBorrar;
+    Pago PagoBorrar;
 
     protected override async Task OnInitializedAsync()
     {
@@ -84,12 +90,12 @@
 
     private async Task Leer()
     {
-        roles = null;
-        var respuesta = await http.Get<List<Rol>>("api/Roles");
+        pagos = null;
+        var respuesta = await http.Get<List<Pago>>("api/Pagos");
         Error = respuesta.Error;
         if (!respuesta.Error)
         {
-            roles = respuesta.Respuesta;
+            pagos = respuesta.Respuesta;
         }
         else
         {
@@ -100,25 +106,24 @@
     private void Cancelar()
     {
         confirmacion.Ocultar();
-        RolBorrar = null;
+        PagoBorrar = null;
     }
 
-    private async Task Eliminar(Rol rolBorrar)
+    private async Task Eliminar(Pago pagoBorrar)
     {
-        RolBorrar = rolBorrar;
+        PagoBorrar = pagoBorrar;
         confirmacion.Ver();
     }
 
     private async Task Borrar()
     {
-        var respuesta = await http.Delete($"api/roles/{RolBorrar.Id}");
+        var respuesta = await http.Delete($"api/pagos/{PagoBorrar.Id}");
         if (respuesta.Error)
         {
-            var body = "Error, no se puede borrar el rol";
+            var body = "Error, no se puede borrar el pago";
         }
 
         Cancelar();
         await Leer();
     }
-
 }
