@@ -1,0 +1,53 @@
+﻿<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="/css/Estilos/FormProveedores.css" rel="stylesheet" type="text/css" />
+</head>
+
+<EditForm Model="proveedor" OnValidSubmit="onValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="margencito">
+        <div class="form-group">
+            <label>Nombre</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@proveedor.Nombre" />
+                <ValidationMessage For="@(() => proveedor.Nombre)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Apellido</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@proveedor.Apellido" />
+                <ValidationMessage For="@(() => proveedor.Apellido)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>RazonSocial</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@proveedor.RazonSocial" />
+                <ValidationMessage For="@(() => proveedor.RazonSocial)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Telefono</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@proveedor.Telefono" />
+                <ValidationMessage For="@(() => proveedor.Telefono)" />
+            </div>
+        </div>
+
+    </div>
+
+    <br />
+    <button class="btn btn-primary" type="submit">Aceptar</button>
+    <button class="btn btn-secondary" @onclick="onCancel">Cancelar</button>
+</EditForm>
+
+@code {
+    //Parametro DTO que se va a cargar
+    [Parameter] public Proveedor proveedor { get; set; } = new Proveedor();
+    //Parametro Metodo de Grabacion
+    [Parameter] public EventCallback onValidSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+
+}

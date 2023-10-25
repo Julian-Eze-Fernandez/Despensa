@@ -1,0 +1,27 @@
+﻿table, th, td {
+    border-bottom: 1px solid black;
+    border-collapse: collapse;
+    max-width: 1000px;
+}
+
+.tituloBtn {
+    margin-bottom: 3%;
+    align-items: center;
+    display: flex;
+}
+
+.fuente {
+    font-size: 18px;
+}
+
+.btnCrear {
+    margin-left: 5%;
+}
+
+.btnBorrar {
+    color: #C1121F;
+}
+
+.btnEditar {
+    color: #669BBC;
+}

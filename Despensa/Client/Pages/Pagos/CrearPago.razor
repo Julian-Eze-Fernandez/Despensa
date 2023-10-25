@@ -1,9 +1,12 @@
 ﻿@page "/pagos/crear"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
-<h3>CrearPago</h3>
 
-<FormPago pago="pago" onValidSubmit="Grabar" onCancel="Cancelar"/>
+<body>
+    <h3>CrearPago</h3>
+
+    <FormPago pago="pago" onValidSubmit="Grabar" onCancel="Cancelar" />
+</body>
 
 @code {
     private Pago pago = new Pago();

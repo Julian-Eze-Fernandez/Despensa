@@ -4,7 +4,7 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #C1121F;
 }
 
 .navbar-brand {
@@ -38,6 +38,7 @@
         display: flex;
         align-items: center;
         line-height: 3rem;
+        background-color: #780000;
     }
 
 .nav-item ::deep a.active {
@@ -59,10 +60,12 @@
         /* Never collapse the sidebar for wide screens */
         display: block;
     }
-    
+
     .nav-scrollable {
         /* Allow sidebar to scroll for tall menus */
         height: calc(100vh - 3.5rem);
         overflow-y: auto;
+        background-color: #C1121F;
     }
 }
+

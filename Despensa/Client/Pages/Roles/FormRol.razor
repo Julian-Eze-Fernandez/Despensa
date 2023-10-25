@@ -1,12 +1,16 @@
 ﻿<EditForm Model="rol" OnValidSubmit="onValidSubmit">
     <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>NombreRol</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@rol.NombreRol" />
-            <ValidationMessage For="@(() => rol.NombreRol)" />
+
+    <div class="margencito">
+        <div class="form-group">
+            <label>NombreRol</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@rol.NombreRol" />
+                <ValidationMessage For="@(() => rol.NombreRol)" />
+            </div>
         </div>
     </div>
+   
     <br/>
     <button class="btn btn-primary" type="submit">Aceptar</button>
     <button class="btn btn-secondary" @onclick="onCancel">Cancelar</button>

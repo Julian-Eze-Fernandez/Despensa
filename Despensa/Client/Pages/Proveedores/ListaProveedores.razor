@@ -1,27 +1,32 @@
-﻿@page "/roles"
+﻿@page "/proveedores"
 @inject IHttpServicio http
 
-<PageTitle>ROLES</PageTitle>
+<PageTitle>PROVEEDORES</PageTitle>
 
 <HeadContent>
-    <meta name="description" content="Listado de Roles" />
+    <meta name="description" content="Listado de Proveedores" />
 </HeadContent>
 
 <head>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="/css/Estilos/ListaRoles.css" rel="stylesheet" type="text/css" />
+    <link href="/css/Estilos/ListaProveedores.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body>
 
     <div class="tituloBtn">
-        <h3>Lista de Roles</h3>
-        <a class="btn btn-primary btnCrear" href="roles/crear">Crear Rol</a>
+        <h3>Lista de Proveedores</h3>
+        <a class="btn btn-primary btnCrear" href="proveedores/crear">Crear Proveedor</a>
     </div>
 
     <table class="fuente">
         <tr>
-            <th>NombreRol</th>
+            <th class="col-3">Nombre</th>
+            <th class="col-3">Apellido</th>
+            <th class="col-3">Razon Social</th>
+            <th class="col-3">Telefono</th>
+            <th></th>
+            <th></th>
         </tr>
 
         @if (Error)
@@ -30,23 +35,26 @@
         }
         else
         {
-            @if (roles == null)
+            @if (proveedores == null)
             {
                 <tr>Cargando...</tr>
             }
-            else if (roles.Count == 0)
+            else if (proveedores.Count == 0)
             {
-                <tr>No existen datos.</tr>
+                <tr>No existen proveedores.</tr>
             }
             else
             {
-                foreach (var item in roles)
+                foreach (var item in proveedores)
                 {
                     <tr>
-                        <td>@item.NombreRol</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Apellido</td>
+                        <td>@item.RazonSocial</td>
+                        <td>@item.Telefono</td>
                         <td>
                             <a class="btnEditar"
-                               href="roles/editar/@item.Id">
+                               href="proveedores/editar/@item.Id">
                                 <i class='bx bxs-edit-alt'></i>
                                 @* Editar *@
                             </a>
@@ -68,24 +76,25 @@
                   verCancelar="true"
                   verOk="true"
                   textOk="Aceptar"
-                  Titulo="Borrar especialidad"
+                  Titulo="Borrar Proveedores"
                   onCancel="Cancelar"
                   onConfirm="Borrar">
         <div>
-            <h1>Está por borrar el rol @RolBorrar.NombreRol</h1>
+            <p>Está por borrar el proveedor @ProveedorBorrar.Nombre</p>
             <br />
             ¿Está seguro que desea continuar?
         </div>
     </Confirmacion>
 </body>
 
+
 @code {
     Confirmacion confirmacion;
 
-    List<Rol>? roles;
+    List<Proveedor>? proveedores;
     bool Error = false;
     string Mensaje = "";
-    Rol RolBorrar;
+    Proveedor ProveedorBorrar;
 
     protected override async Task OnInitializedAsync()
     {
@@ -95,12 +104,12 @@
 
     private async Task Leer()
     {
-        roles = null;
-        var respuesta = await http.Get<List<Rol>>("api/Roles");
+        proveedores = null;
+        var respuesta = await http.Get<List<Proveedor>>("api/Proveedores");
         Error = respuesta.Error;
         if (!respuesta.Error)
         {
-            roles = respuesta.Respuesta;
+            proveedores = respuesta.Respuesta;
         }
         else
         {
@@ -111,25 +120,24 @@
     private void Cancelar()
     {
         confirmacion.Ocultar();
-        RolBorrar = null;
+        ProveedorBorrar = null;
     }
 
-    private async Task Eliminar(Rol rolBorrar)
+    private async Task Eliminar(Proveedor proveedorBorrar)
     {
-        RolBorrar = rolBorrar;
+        ProveedorBorrar = proveedorBorrar;
         confirmacion.Ver();
     }
 
     private async Task Borrar()
     {
-        var respuesta = await http.Delete($"api/roles/{RolBorrar.Id}");
+        var respuesta = await http.Delete($"api/proveedores/{ProveedorBorrar.Id}");
         if (respuesta.Error)
         {
-            var body = "Error, no se puede borrar el rol";
+            var body = "Error, no se puede borrar el proveedor.";
         }
 
         Cancelar();
         await Leer();
     }
-
 }

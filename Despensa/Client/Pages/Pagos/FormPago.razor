@@ -1,42 +1,50 @@
-﻿<EditForm Model="pago" OnValidSubmit="onValidSubmit">
+﻿<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="/css/Estilos/FormPagos.css" rel="stylesheet" type="text/css" />
+</head>
+
+<EditForm Model="pago" OnValidSubmit="onValidSubmit">
     <DataAnnotationsValidator />
-    <div class="form-group">
-        <label>Numero del Usuario</label>
-        <div>
-            <InputNumber class="form-control" @bind-Value="@pago.UsuarioId" />
-            <ValidationMessage For="@(() => pago.UsuarioId)" />
-        </div>
-    </div>
 
-    <div class="form-group">
-        <label>Numero del Proveedor</label>
-        <div>
-            <InputNumber class="form-control" @bind-Value="@pago.ProveedorId" />
-            <ValidationMessage For="@(() => pago.ProveedorId)" />
+    <div class="margencito">
+        <div class="form-group">
+            <label>Numero del Usuario</label>
+            <div>
+                <InputNumber class="form-control" @bind-Value="@pago.UsuarioId" />
+                <ValidationMessage For="@(() => pago.UsuarioId)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Descripcion</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@pago.Descripcion" />
-            <ValidationMessage For="@(() => pago.Descripcion)" />
+        <div class="form-group">
+            <label>Numero del Proveedor</label>
+            <div>
+                <InputNumber class="form-control" @bind-Value="@pago.ProveedorId" />
+                <ValidationMessage For="@(() => pago.ProveedorId)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Monto</label>
-        <div>
-            <InputNumber class="form-control" @bind-Value="@pago.Monto" />
-            <ValidationMessage For="@(() => pago.Monto)" />
+        <div class="form-group">
+            <label>Descripcion</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@pago.Descripcion" />
+                <ValidationMessage For="@(() => pago.Descripcion)" />
+            </div>
         </div>
-    </div>
 
-    <div class="form-group">
-        <label>Tipo de Pago</label>
-        <div>
-            <InputText class="form-control" @bind-Value="@pago.TipoPago" />
-            <ValidationMessage For="@(() => pago.TipoPago)" />
+        <div class="form-group">
+            <label>Monto</label>
+            <div>
+                <InputNumber class="form-control" @bind-Value="@pago.Monto" />
+                <ValidationMessage For="@(() => pago.Monto)" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de Pago</label>
+            <div>
+                <InputText class="form-control" @bind-Value="@pago.TipoPago" />
+                <ValidationMessage For="@(() => pago.TipoPago)" />
+            </div>
         </div>
     </div>
 

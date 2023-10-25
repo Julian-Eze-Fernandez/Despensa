@@ -7,72 +7,87 @@
     <meta name="description" content="Listado de Pagos" />
 </HeadContent>
 
-<h3>Lista de Pagos</h3>
+<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="/css/Estilos/ListaPagos.css" rel="stylesheet" type="text/css" />
+</head>
 
-<a class="btn btn-primary" href="pagos/crear">Crear Pago</a>
+<body>
 
-<table>
-    <tr>
-        <th>Numero de Proveedor</th>
-        <th>Descripcion</th>
-        <th>Monto</th>
-        <th>Tipo de Pago</th>
-    </tr>
+    <div class="tituloBtn">
+        <h3>Lista de Pagos</h3>
+        <a class="btn btn-primary btnCrear" href="pagos/crear">Crear Pago</a>
+    </div>
 
-    @if (Error)
-    {
-        <tr>@Mensaje</tr>
-    }
-    else
-    {
-        @if (pagos == null)
+    <table class="fuente">
+        <tr>
+            <th class="col-3">Proveedor</th>
+            <th class="col-3">Descripcion</th>
+            <th class="col-3">Monto</th>
+            <th class="col-3">Tipo</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @if (Error)
         {
-            <tr>Cargando...</tr>
-        }
-        else if (pagos.Count == 0)
-        {
-            <tr>No existen pagos.</tr>
+            <tr>@Mensaje</tr>
         }
         else
         {
-            foreach (var item in pagos)
+            @if (pagos == null)
             {
-                <tr>
-                    <td>@item.ProveedorId</td>
-                    <td>@item.Descripcion</td>
-                    <td>@item.Monto</td>
-                    <td>@item.TipoPago</td>
-                    <td>
-                        <a class="btn btn-primary"
-                           href="pagos/editar/@item.Id">
-                            Editar
-                        </a>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning"
-                        @onclick="()=>Eliminar(item)">
-                            Borrar
-                        </a>
-                    </td>
-                </tr>
+                <tr>Cargando...</tr>
+            }
+            else if (pagos.Count == 0)
+            {
+                <tr>No existen pagos.</tr>
+            }
+            else
+            {
+                foreach (var item in pagos)
+                {
+                    <tr>
+                        <td>@item.ProveedorId</td>
+                        <td>@item.Descripcion</td>
+                        <td>@item.Monto</td>
+                        <td>@item.TipoPago</td>
+                        <td>
+                            <a class="btnEditar"
+                               href="pagos/editar/@item.Id">
+                                <i class='bx bxs-edit-alt'></i>
+                                @* Editar *@
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btnBorrar"
+                            @onclick="()=>Eliminar(item)">
+                                <i class='bx bxs-trash'></i>
+                                @* Borrar *@
+                            </a>
+                        </td>
+                    </tr>
+                }
             }
         }
-    }
-</table>
+    </table>
 
-<Confirmacion @ref="confirmacion"
-              verCancelar="true"
-              verOk="true"
-              textOk="Aceptar"
-              Titulo="Borrar especialidad"
-              onCancel="Cancelar"
-              onConfirm="Borrar">
-    <div>
-        <h1>Está por borrar el pago @PagoBorrar.Descripcion</h1>
-        <br />
-        ¿Está seguro que desea continuar?
-    </div>
-</Confirmacion>
+    <Confirmacion @ref="confirmacion"
+                  verCancelar="true"
+                  verOk="true"
+                  textOk="Aceptar"
+                  Titulo="Borrar Pago"
+                  onCancel="Cancelar"
+                  onConfirm="Borrar">
+
+        <div>
+            <p>Está por borrar el pago @PagoBorrar.Descripcion</p>
+            <br />
+            <p>¿Está seguro que desea continuar?</p>
+        </div>
+    </Confirmacion>
+</body>
+
 
 @code {
     Confirmacion confirmacion;
