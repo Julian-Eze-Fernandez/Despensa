@@ -1,5 +1,5 @@
 ﻿.fondoTop {
-    background-color: #669BBC;
+    background-color: #C1121F;
 }
 
 .fondoBody {
@@ -11,3 +11,6 @@
     background-color: transparent;
 }
 
+.txtBlanco {
+    color: white;
+}

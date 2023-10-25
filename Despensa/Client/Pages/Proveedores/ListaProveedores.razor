@@ -21,6 +21,7 @@
 
     <table class="fuente">
         <tr>
+            <th class="col-3">Num.</th>
             <th class="col-3">Nombre</th>
             <th class="col-3">Apellido</th>
             <th class="col-3">Razon Social</th>
@@ -48,6 +49,7 @@
                 foreach (var item in proveedores)
                 {
                     <tr>
+                        <td>@item.Id</td>
                         <td>@item.Nombre</td>
                         <td>@item.Apellido</td>
                         <td>@item.RazonSocial</td>
@@ -82,7 +84,7 @@
         <div>
             <p>Está por borrar el proveedor @ProveedorBorrar.Nombre</p>
             <br />
-            ¿Está seguro que desea continuar?
+            <p>¿Está seguro que desea continuar?</p>
         </div>
     </Confirmacion>
 </body>
