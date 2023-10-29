@@ -1,16 +1,16 @@
-﻿@page "/pagos/editar/{pagoId:int}"
+﻿@page "/usuarios/editar/{UsuarioId:int}"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
 
 <body>
-    <h3>Editar Pago</h3>
+    <h3>Editar Usuario</h3>
 
-    <FormPago pago="pago" onValidSubmit="Grabar" onCancel="Cancelar" />
+    <FormUsuario usuario="usuario" onValidSubmit="Grabar" onCancel="Cancelar" />
 </body>
 
 @code {
-    private Pago pago = new();
-    [Parameter] public int pagoId { get; set; }
+    private Usuario usuario = new();
+    [Parameter] public int usuarioId { get; set; }
     string Mensaje = "";
 
     protected override async Task OnInitializedAsync()
@@ -21,10 +21,10 @@
 
     private async Task Mostrar()
     {
-        var respuesta = await http.Get<Pago>($"api/Pagos/{pagoId}");
+        var respuesta = await http.Get<Usuario>($"api/Usuarios/{usuarioId}");
         if (!respuesta.Error)
         {
-            pago = respuesta.Respuesta;
+            usuario = respuesta.Respuesta;
         }
         else
         {
@@ -34,19 +34,19 @@
 
     private async Task Grabar()
     {
-        var respuesta = await http.Put<Pago>($"api/pagos/{pagoId}",
-                                            pago);
+        var respuesta = await http.Put<Usuario>($"api/Usuarios/{usuarioId}",
+                                            usuario);
 
         if (respuesta.Error)
         {
             var body = respuesta.HttpResponseMessage;
         }
 
-        navigationManager.NavigateTo("/pagos");
+        navigationManager.NavigateTo("/usuarios");
     }
 
     private void Cancelar()
     {
-        navigationManager.NavigateTo("/pagos");
+        navigationManager.NavigateTo("/usuarios");
     }
 }

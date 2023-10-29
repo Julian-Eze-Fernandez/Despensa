@@ -1,0 +1,38 @@
+﻿@page "/usuarios/crear"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+
+<body>
+    <h3>Nuevo Usuario</h3>
+
+    <FormUsuario usuario="usuario" onValidSubmit="Grabar" onCancel="Cancelar" />
+</body>
+
+@code {
+    private Usuario usuario = new Usuario();
+
+    private async Task Grabar()
+    {
+        UsuarioDTO usuarioDTO = new()
+            {
+                DNI = usuario.DNI,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                RolId = usuario.RolId
+            };
+        var httpRespuesta = await http.Post<UsuarioDTO>("api/Usuarios", usuarioDTO);
+
+        if (httpRespuesta.Error)
+        {
+            var body = httpRespuesta.HttpResponseMessage;
+        }
+
+        navigationManager.NavigateTo("/usuarios");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/usuarios");
+    }
+}

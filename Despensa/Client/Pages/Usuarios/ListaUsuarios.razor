@@ -1,0 +1,145 @@
+﻿@page "/usuarios"
+@inject IHttpServicio http
+
+<PageTitle>USUARIOS</PageTitle>
+
+<HeadContent>
+    <meta name="description" content="Listado de Usuarios" />
+</HeadContent>
+
+<head>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="/css/Estilos/ListaUsuarios.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+
+    <div class="tituloBtn">
+        <h3>Lista de Usuarios</h3>
+        <a class="btn btn-primary btnCrear" href="usuarios/crear">Crear Usuario</a>
+    </div>
+
+    <table class="fuente">
+        <tr>
+            <th class="col-3">DNI</th>
+            <th class="col-3">Nombre</th>
+            <th class="col-3">Apellido</th>
+            <th class="col-3">Telefono</th>
+            <th class="col-3"> RolId</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @if (Error)
+        {
+            <tr>@Mensaje</tr>
+        }
+        else
+        {
+            @if (usuarios == null)
+            {
+                <tr>Cargando...</tr>
+            }
+            else if (usuarios.Count == 0)
+            {
+                <tr>No existen usuarios.</tr>
+            }
+            else
+            {
+                foreach (var item in usuarios)
+                {
+                    <tr>
+                        <td>@item.DNI</td>
+                        <td>@item.Nombre</td>
+                        <td>@item.Apellido</td>
+                        <td>@item.Telefono</td>
+                        <td>@item.RolId</td>
+                        <td>
+                            <a class="btnEditar"
+                               href="usuarios/editar/@item.Id">
+                                <i class='bx bxs-edit-alt'></i>
+                                @* Editar *@
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btnBorrar"
+                            @onclick="()=>Eliminar(item)">
+                                <i class='bx bxs-trash'></i>
+                                @* Borrar *@
+                            </a>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+
+    <Confirmacion @ref="confirmacion"
+                  verCancelar="true"
+                  verOk="true"
+                  textOk="Aceptar"
+                  Titulo="Borrar Usuarios"
+                  onCancel="Cancelar"
+                  onConfirm="Borrar">
+        <div>
+            <p>Está por borrar el usuario @UsuarioBorrar.Nombre</p>
+            <br />
+            <p>¿Está seguro que desea continuar?</p>
+        </div>
+    </Confirmacion>
+</body>
+
+
+@code {
+    Confirmacion confirmacion;
+
+    List<Usuario>? usuarios;
+    bool Error = false;
+    string Mensaje = "";
+    Usuario UsuarioBorrar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        usuarios = null;
+        var respuesta = await http.Get<List<Usuario>>("api/Usuarios");
+        Error = respuesta.Error;
+        if (!respuesta.Error)
+        {
+            usuarios = respuesta.Respuesta;
+        }
+        else
+        {
+            Mensaje = await respuesta.ObtenerError();
+        }
+    }
+
+    private void Cancelar()
+    {
+        confirmacion.Ocultar();
+        UsuarioBorrar = null;
+    }
+
+    private async Task Eliminar(Usuario usuarioBorrar)
+    {
+        UsuarioBorrar = usuarioBorrar;
+        confirmacion.Ver();
+    }
+
+    private async Task Borrar()
+    {
+        var respuesta = await http.Delete($"api/usuarios/{UsuarioBorrar.Id}");
+        if (respuesta.Error)
+        {
+            var body = "Error, no se puede borrar el usuario.";
+        }
+
+        Cancelar();
+        await Leer();
+    }
+}

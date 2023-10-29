@@ -30,6 +30,11 @@ namespace Despensa.BD.Data
                 fk.DeleteBehavior = DeleteBehavior.Restrict;
             }
 
+            // Configura el tipo de columna para la propiedad 'Monto' en la entidad 'Pago'.
+            modelBuilder.Entity<Pago>()
+                .Property(p => p.Monto)
+                .HasColumnType("decimal(18, 2)");
+
             base.OnModelCreating(modelBuilder);
         }
     }

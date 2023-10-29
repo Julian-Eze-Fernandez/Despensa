@@ -1,9 +1,12 @@
 ﻿@page "/proveedores/editar/{proveedorId:int}"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
-<h3>Editar Proveedor</h3>
 
-<FormProveedor proveedor="proveedor" onValidSubmit="Grabar" onCancel="Cancelar" />
+<body>
+    <h3>Editar Proveedor</h3>
+
+    <FormProveedor proveedor="proveedor" onValidSubmit="Grabar" onCancel="Cancelar" />
+</body>
 
 @code {
     private Proveedor proveedor = new();

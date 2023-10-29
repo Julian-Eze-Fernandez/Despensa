@@ -19,7 +19,7 @@ namespace Despensa.BD.Migrations
                     Nombre = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     Apellido = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     RazonSocial = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
-                    Telefono = table.Column<int>(type: "int", maxLength: 20, nullable: false)
+                    Telefono = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,7 +69,7 @@ namespace Despensa.BD.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Descripcion = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Monto = table.Column<int>(type: "int", nullable: false),
+                    Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     TipoPago = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
                     UsuarioId = table.Column<int>(type: "int", nullable: false),
                     ProveedorId = table.Column<int>(type: "int", nullable: false)
@@ -105,12 +105,6 @@ namespace Despensa.BD.Migrations
                 name: "IX_Usuarios_RolId",
                 table: "Usuarios",
                 column: "RolId");
-
-            migrationBuilder.CreateIndex(
-                name: "Usuario_DNI_UQ",
-                table: "Usuarios",
-                column: "DNI",
-                unique: true);
         }
 
         /// <inheritdoc />

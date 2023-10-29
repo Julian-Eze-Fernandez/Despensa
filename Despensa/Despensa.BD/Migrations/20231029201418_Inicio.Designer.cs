@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Despensa.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230903050719_Inicio")]
+    [Migration("20231029201418_Inicio")]
     partial class Inicio
     {
         /// <inheritdoc />
@@ -19,7 +19,7 @@ namespace Despensa.BD.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.10")
+                .HasAnnotation("ProductVersion", "7.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -37,8 +37,8 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.Property<int>("Monto")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Monto")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("ProveedorId")
                         .HasColumnType("int");
@@ -83,9 +83,10 @@ namespace Despensa.BD.Migrations
                         .HasMaxLength(40)
                         .HasColumnType("nvarchar(40)");
 
-                    b.Property<int>("Telefono")
+                    b.Property<string>("Telefono")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -142,9 +143,6 @@ namespace Despensa.BD.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RolId");
-
-                    b.HasIndex(new[] { "DNI" }, "Usuario_DNI_UQ")
-                        .IsUnique();
 
                     b.ToTable("Usuarios");
                 });

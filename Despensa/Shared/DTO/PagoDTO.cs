@@ -14,7 +14,7 @@ namespace Despensa.Shared.DTO
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El MONTO es Obligatorio")]
-        public int Monto { get; set; }
+        public decimal Monto { get; set; }
 
         [Required(ErrorMessage = "El TIPO del PAGO es Obligatorio")]
         [MaxLength(15, ErrorMessage = "Solo se aceptan hasta 15 caracteres en el TIPO de PAGO")]
