@@ -1,68 +1,4 @@
-﻿<head>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link href="/css/Estilos/FormPagos.css" rel="stylesheet" type="text/css" />
-</head>
-
-<EditForm Model="pago" OnValidSubmit="onValidSubmit">
-    <DataAnnotationsValidator />
-
-    <div class="margencito">
-        <div class="form-group">
-            <label>Numero del Usuario</label>
-            <div>
-                <InputNumber class="form-control" @bind-Value="@pago.UsuarioId" />
-                <ValidationMessage For="@(() => pago.UsuarioId)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Numero del Proveedor</label>
-            <div>
-                <InputNumber class="form-control" @bind-Value="@pago.ProveedorId" />
-                <ValidationMessage For="@(() => pago.ProveedorId)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Descripcion</label>
-            <div>
-                <InputText class="form-control" @bind-Value="@pago.Descripcion" />
-                <ValidationMessage For="@(() => pago.Descripcion)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Monto</label>
-            <div>
-                <InputNumber class="form-control" @bind-Value="@pago.Monto" />
-                <ValidationMessage For="@(() => pago.Monto)" />
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label>Tipo de Pago</label>
-            <div>
-                <InputText class="form-control" @bind-Value="@pago.TipoPago" />
-                <ValidationMessage For="@(() => pago.TipoPago)" />
-            </div>
-        </div>
-    </div>
-
-    <br/>
-    <button class="btn btn-primary" type="submit">Aceptar</button>
-    <button class="btn btn-secondary" @onclick="onCancel">Cancelar</button>
-</EditForm>
-
-@code {
-    //Parametro DTO que se va a cargar
-    [Parameter] public Pago pago { get; set; } = new Pago();
-    //Parametro Metodo de Grabacion
-    [Parameter] public EventCallback onValidSubmit { get; set; }
-    [Parameter] public EventCallback onCancel { get; set; }
-
-    #region Codigo con ImputSelect
-
-    @* @inject IHttpServicio http
+﻿    @inject IHttpServicio http
 
 <head>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
@@ -83,16 +19,20 @@
 
         <div class="form-group">
             <label>Nombre del Proveedor</label>
-            <div>
-                <InputSelect class="form-control" @bind-Value="@pago.ProveedorId">
-                    <option value="0">Seleccione un proveedor</option>
-                    @foreach (var proveedor in proveedores)
-                    {
-                        <option value="@proveedor.Id">@proveedor.Nombre</option>
-                    }
-                </InputSelect>
-                <ValidationMessage For="@(() => pago.ProveedorId)" />
-            </div>
+            @if (proveedores != null)
+            {
+                <div>
+                    <InputSelect class="form-control" @bind-Value="@pago.ProveedorId">
+                        <option value="0">Seleccione un proveedor</option>
+                        @foreach (var proveedor in proveedores)
+                        {
+                            <option value="@proveedor.Id">@proveedor.Nombre</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => pago.ProveedorId)" />
+                </div>
+            }
+           
 
         </div>
 
@@ -133,7 +73,7 @@
     [Parameter] public EventCallback onValidSubmit { get; set; }
     [Parameter] public EventCallback onCancel { get; set; }
 
-    List<Proveedor>? proveedores;
+    List<Proveedor>? proveedores = new List<Proveedor>();
     bool Error = false;
     string Mensaje = "";
 
@@ -157,10 +97,75 @@
             Mensaje = await respuesta.ObtenerError();
         }
     }
-} *@
+
+    #region Prg sin imput select
+
+    // <head>
+    //     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    //     <link href="/css/Estilos/FormPagos.css" rel="stylesheet" type="text/css" />
+    // </head>
+
+    // <EditForm Model="pago" OnValidSubmit="onValidSubmit">
+    //     <DataAnnotationsValidator />
+
+    //     <div class="margencito">
+    //         <div class="form-group">
+    //             <label>Numero del Usuario</label>
+    //             <div>
+    //                 <InputNumber class="form-control" @bind-Value="@pago.UsuarioId" />
+    //                 <ValidationMessage For="@(() => pago.UsuarioId)" />
+    //             </div>
+    //         </div>
+
+    //         <div class="form-group">
+    //             <label>Numero del Proveedor</label>
+    //             <div>
+    //                 <InputNumber class="form-control" @bind-Value="@pago.ProveedorId" />
+    //                 <ValidationMessage For="@(() => pago.ProveedorId)" />
+    //             </div>
+    //         </div>
+
+    //         <div class="form-group">
+    //             <label>Descripcion</label>
+    //             <div>
+    //                 <InputText class="form-control" @bind-Value="@pago.Descripcion" />
+    //                 <ValidationMessage For="@(() => pago.Descripcion)" />
+    //             </div>
+    //         </div>
+
+    //         <div class="form-group">
+    //             <label>Monto</label>
+    //             <div>
+    //                 <InputNumber class="form-control" @bind-Value="@pago.Monto" />
+    //                 <ValidationMessage For="@(() => pago.Monto)" />
+    //             </div>
+    //         </div>
+
+    //         <div class="form-group">
+    //             <label>Tipo de Pago</label>
+    //             <div>
+    //                 <InputText class="form-control" @bind-Value="@pago.TipoPago" />
+    //                 <ValidationMessage For="@(() => pago.TipoPago)" />
+    //             </div>
+    //         </div>
+    //     </div>
+
+    //     <br />
+    //     <button class="btn btn-primary" type="submit">Aceptar</button>
+    //     <button class="btn btn-secondary" @onclick="onCancel">Cancelar</button>
+    // </EditForm>
+
+    // @code {
+    // //Parametro DTO que se va a cargar
+    // [Parameter] public Pago pago { get; set; } = new Pago();
+    //     //Parametro Metodo de Grabacion
+    //     [Parameter] public EventCallback onValidSubmit { get; set; }
+    //     [Parameter] public EventCallback onCancel { get; set; }
+
+    //     #region Codigo con ImputSelect
+    //     #endregion
+
+    // }
 
     #endregion
-
 }
-
-

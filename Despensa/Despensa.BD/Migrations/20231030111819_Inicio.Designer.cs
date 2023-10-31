@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Despensa.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20231029201418_Inicio")]
+    [Migration("20231030111819_Inicio")]
     partial class Inicio
     {
         /// <inheritdoc />
